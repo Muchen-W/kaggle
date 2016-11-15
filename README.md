@@ -1,5 +1,8 @@
 # kaggle
 Kaggle projects
 
-# Allstate
-Do not push dataset in the Kaggle repository
+## Titanic
+-Go through the tutorial
+
+## Allstate
+-Do not push dataset in the Kaggle repository
