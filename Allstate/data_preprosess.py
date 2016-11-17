@@ -24,6 +24,29 @@ def complete_train_data():
 	fwrite = 'train_preprocessed.csv'
 	df_tr = data_preprocess(fread, fwrite)
 
+def split_train_validate_test(fread, fwrite):
+	df = pd.read_csv(fread)
+	df_train = df.sample(frac=0.6, random_state=1).sort_values('id')
+	df.drop(df_train.index, inplace=True)
+	df_validate = df.sample(frac=0.5, random_state=2).sort_values('id')
+	df_test = df.drop(df_validate.index).sort_values('id')
+	for fw in fwrite:
+		if 'validate' in fw:
+			df_validate.to_csv(fw, index=False)
+		elif 'test' in fw:
+			df_test.to_csv(fw, index=False)
+		else:
+			df_train.to_csv(fw, index=False)
+	#print(df_sample.describe())
+
+def split_training_dataset():
+	#fread = 'train_sample_preprocessed.csv'
+	#fwrite = ['train_sample_split.csv', 'validate_sample_split.csv', 'test_sample_split.csv']
+	fread = 'train_preprocessed.csv'
+	fwrite = ['train_split.csv', 'validate_split.csv', 'test_split.csv']
+	split_train_validate_test(fread, fwrite)
+
 if __name__ == '__main__':
-	sample_trial()
+	#sample_trial()
 	#complete_train_data()
+	split_training_dataset()
