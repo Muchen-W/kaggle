@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+from sklearn import preprocessing 
 
 def data_preprocess(fread, fwrite):
 	df_tr = pd.read_csv(fread)
@@ -46,7 +48,24 @@ def split_training_dataset():
 	fwrite = ['train_split.csv', 'validate_split.csv', 'test_split.csv']
 	split_train_validate_test(fread, fwrite)
 
+def normalize():
+	# original data has been normalized
+	fread = 'train_sample_preprocessed.csv'
+	fwrite = 'train_sample_preprocessed_normalized.csv'
+	df = pd.read_csv(fread)
+	#min_max_scaler = preprocessing.MinMaxScaler()
+	df.apply(lambda x: (x - np.mean(x)) / (np.max(x) - np.min(x)))
+	df.to_csv(fwrite, index=False)
+
+def split_train_for_experiment():
+	fread = 'train_split.csv'
+	fwrite = 'train_split_sample.csv'
+	df_train = pd.read_csv(fread)
+	df_sample = df_train.sample(frac=0.02, random_state=3).sort_values('id')
+	df_sample.to_csv(fwrite, index=False)
+
 if __name__ == '__main__':
 	#sample_trial()
 	#complete_train_data()
-	split_training_dataset()
+	#split_training_dataset()
+	split_train_for_experiment()
